@@ -26,6 +26,10 @@
             android:name="com.palepail.buttonclicker.UpgradeScreen"
             android:label="@string/title_activity_upgrade_screen" >
         </activity>
+        <activity
+            android:name=".StatsScreen"
+            android:label="@string/title_activity_stats" >
+        </activity>
     </application>
 
 </manifest>

@@ -52,4 +52,13 @@
         android:id="@+id/CPSView"
         android:layout_below="@+id/mainCounter"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stats"
+        android:id="@+id/statsButton"
+        android:onClick="goToStats"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>

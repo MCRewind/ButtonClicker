@@ -16,26 +16,36 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="CPS"
+        android:id="@+id/upgradeCPS"
+        android:layout_below="@id/upgradeCounter"
+
+        android:layout_centerHorizontal="true"></TextView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
-        android:layout_below="@+id/upgradeCounter"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/upgradeCPS">
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Upgrade 1"
-                android:id="@+id/upgrade1Text"
-                android:textSize="20dip"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Upgrade 1"
+            android:id="@+id/upgrade1Text"
+            android:textSize="20dip"
+                android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,9 +54,20 @@
                 android:text="0"
                 android:id="@+id/upgrade1Cost"
                 android:textSize="20dip"
+                android:layout_marginTop="10dp"
+                android:layout_alignBaseline="@+id/upgrade1Text"
                 android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/buyUpgrade1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Value: 1"
+                android:id="@+id/upgrade1Value"
+                android:textSize="15dip"
+                android:layout_alignParentLeft="true"
+
+                android:layout_below="@id/upgrade1Text"/>
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -55,10 +76,106 @@
                 android:text="Buy"
                 android:onClick="buyUpgrade1"
                 android:id="@+id/buyUpgrade1"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true" />
+                android:layout_marginTop="5dp"
+                android:layout_alignBaseline="@+id/upgrade1Text"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Upgrade 2"
+                android:id="@+id/upgrade2Text"
+                android:textSize="20dip"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/upgrade1Value"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="0"
+                android:id="@+id/upgrade2Cost"
+                android:textSize="20dip"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignBaseline="@+id/upgrade2Text"
+                android:layout_toLeftOf="@+id/buyUpgrade2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Value: 10"
+                android:id="@+id/upgrade2Value"
+                android:textSize="15dip"
+                android:layout_alignParentLeft="true"
+
+                android:layout_below="@id/upgrade2Text"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buy"
+                android:onClick="buyUpgrade2"
+                android:id="@+id/buyUpgrade2"
+                android:layout_marginTop="5dp"
+                android:layout_alignBaseline="@+id/upgrade2Text"
+                android:layout_below="@id/upgrade1Text"
+                android:layout_alignParentRight="true"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Upgrade 3"
+                android:id="@+id/upgrade3Text"
+                android:textSize="20dip"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/upgrade2Value"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="0"
+                android:id="@+id/upgrade3Cost"
+                android:textSize="20dip"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignBaseline="@+id/upgrade3Text"
+                android:layout_toLeftOf="@+id/buyUpgrade3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Value: 50"
+                android:id="@+id/upgrade3Value"
+                android:textSize="15dip"
+                android:layout_alignParentLeft="true"
+
+                android:layout_below="@id/upgrade3Text"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buy"
+                android:onClick="buyUpgrade3"
+                android:id="@+id/buyUpgrade3"
+                android:layout_marginTop="5dp"
+                android:layout_alignBaseline="@+id/upgrade3Text"
+                android:layout_below="@id/upgrade1Text"
+                android:layout_alignParentRight="true"
+                />
+
 
         </RelativeLayout>
     </ScrollView>
+
 
 </RelativeLayout>

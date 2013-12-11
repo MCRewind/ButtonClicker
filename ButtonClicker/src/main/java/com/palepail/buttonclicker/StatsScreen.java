@@ -1,7 +1,6 @@
 package com.palepail.buttonclicker;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,50 +8,67 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Intent;
 import android.widget.TextView;
 
-import java.util.concurrent.Executors;
+
+import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import android.os.Build;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
-public class ButtonActivity extends ActionBarActivity {
 
+public class StatsScreen extends ActionBarActivity {
+    DateTime startTime;
     Clicks clicks;
-    Button button;
-    ClicksPerSecond CPS;
-    private static ScheduledExecutorService scheduleTaskExecutor;
+    Period period;
 
+    PeriodFormatter periodFormat = new PeriodFormatterBuilder()
+            .appendDays()
+            .appendSuffix("d")
+            .appendSeparator(" ")
+            .appendMinutes()
+            .appendSuffix("m")
+            .appendSeparator(" ")
+            .appendSeconds()
+            .appendSuffix("s")
+            .toFormatter();
+
+
+    private ScheduledExecutorService scheduleTaskExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.button_main);
+        setContentView(R.layout.activity_stats);
 
+        if (scheduleTaskExecutor == null) {
+            scheduleTaskExecutor = ButtonActivity.getScheduleTaskExecutor();
+        }
+
+        if (startTime == null) {
+            startTime = Button.getFirstClick();
+        }
         if (clicks == null) {
             clicks = Clicks.getClicksObject();
         }
-        if (CPS == null) {
-            CPS = ClicksPerSecond.getCPSObject();
-        }
-        button = new Button();
-
-
-        scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
+        updateStats();
 
         // This schedule a task to run every 1 second:
         scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
-
-                clicks.addClicks(CPS.getCPS());
+                if (startTime!=null) {
+                    period = period.plusSeconds(1);
+                }
                 // If you need update UI, simply do this:
                 runOnUiThread(new Runnable() {
                     public void run() {
                         // update your UI component here.
-                        updateCounter();
-                        updateCPS();
+                        repeatUpdateStats();
+
                     }
                 });
             }
@@ -65,17 +81,45 @@ public class ButtonActivity extends ActionBarActivity {
         }
     }
 
-    public static ScheduledExecutorService getScheduleTaskExecutor() {
-        return scheduleTaskExecutor;
+
+    private void updateStats() {
+        TextView view = (TextView) findViewById(R.id.manualClicks);
+        view.setText(String.valueOf(Button.getManualClicks()));
+        period = new Period(startTime, new DateTime());
+        view = (TextView) findViewById(R.id.timeDisplay);
+        view.setText(period.toString());
     }
 
+    private void repeatUpdateStats() {
+        TextView view = (TextView) findViewById(R.id.totalClicks);
+        view.setText(String.valueOf(clicks.getClicks()));
+
+
+        view = (TextView) findViewById(R.id.timeDisplay);
+        view.setText(periodFormat.print(period.normalizedStandard()));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.button, menu);
+        getMenuInflater().inflate(R.menu.stats, menu);
         return true;
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        repeatUpdateStats();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        repeatUpdateStats();
     }
 
     @Override
@@ -90,37 +134,6 @@ public class ButtonActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void buttonClicked(View v) {
-        clicks.addClicks(button.getValue());
-        button.addManualClicks();
-        ;
-        updateCounter();
-    }
-
-    public void goToUpgrades(View v) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setClassName(this, UpgradeScreen.class.getName());
-
-        this.startActivity(intent);
-    }
-
-    public void goToStats(View v) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setClassName(this, StatsScreen.class.getName());
-        this.startActivity(intent);
-    }
-
-
-    private void updateCounter() {
-        TextView counter = (TextView) findViewById(R.id.mainCounter);
-        counter.setText(String.valueOf(clicks.getClicks()));
-    }
-
-    private void updateCPS() {
-        TextView counter = (TextView) findViewById(R.id.CPSView);
-        counter.setText(String.valueOf(CPS.getCPS()) + " CPS");
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -132,7 +145,7 @@ public class ButtonActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_stats, container, false);
             return rootView;
         }
     }

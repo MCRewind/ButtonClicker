@@ -5,6 +5,7 @@ package com.palepail.buttonclicker;
  */
 public class Clicks {
     private long clicks = 0;
+    private long totalClicks = 0;
     private static Clicks click;
 
     public static Clicks getClicksObject() {
@@ -16,6 +17,12 @@ public class Clicks {
 
     public void addClicks(int number) {
         clicks += number;
+        totalClicks += number;
+    }
+
+    public void subClicks(int number) {
+        clicks -= number;
+
     }
 
     public long getClicks() {

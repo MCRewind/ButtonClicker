@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.palepail.buttonclicker.Upgrades.*;
 
+import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,10 @@ public class UpgradeScreen extends ActionBarActivity {
 
     Clicks clicks;
     ClicksPerSecond CPS;
-    Upgrade upgrade1= new Upgrade1();
+    ArrayList<Upgrade> upgrades= new ArrayList<Upgrade>();
+    ArrayList<TextView> costs = new ArrayList<TextView>();
+
+
     ButtonActivity buttonActivity;
     private ScheduledExecutorService scheduleTaskExecutor;
 
@@ -36,13 +40,19 @@ public class UpgradeScreen extends ActionBarActivity {
         if (CPS == null) {
             CPS = ClicksPerSecond.getCPSObject();
         }
-        if (upgrade1 == null) {
-            upgrade1 = Upgrade1.getUpgradeObject();
+        if (upgrades.size() == 0) {
+           upgrades = Upgrade.getUpgrades();
         }
+
         if (scheduleTaskExecutor == null) {
             scheduleTaskExecutor = ButtonActivity.getScheduleTaskExecutor();
         }
+        costs.add((TextView)(findViewById(R.id.upgrade1Cost)));
+        costs.add((TextView)(findViewById(R.id.upgrade2Cost)));
+        costs.add((TextView)(findViewById(R.id.upgrade3Cost)));
 
+
+        doOnce();
         updateCosts();
 
 
@@ -103,24 +113,59 @@ public class UpgradeScreen extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void doOnce(){
+        ArrayList<TextView> values = new ArrayList<TextView>();
+        ArrayList<TextView> names = new ArrayList<TextView>();
+
+        values.add((TextView)(findViewById(R.id.upgrade1Value)));
+        values.add((TextView)(findViewById(R.id.upgrade2Value)));
+        values.add((TextView)(findViewById(R.id.upgrade3Value)));
+
+
+        names.add((TextView)(findViewById(R.id.upgrade1Text)));
+        names.add((TextView)(findViewById(R.id.upgrade2Text)));
+        names.add((TextView)(findViewById(R.id.upgrade3Text)));
+
+        for(Upgrade u : upgrades)
+        {
+            values.get(upgrades.indexOf(u)).setText("Value: "+ u.getValue());
+            names.get(upgrades.indexOf(u)).setText(u.getName());
+        }
+
+    }
+
     public void buyUpgrade1(View v) {
-        if (upgrade1.getCost() <= clicks.getClicks()) {
-            upgrade1.buyUpgrade();
+        if (upgrades.get(0).getCost() <= clicks.getClicks()) {
+            upgrades.get(0).buyUpgrade();
             updateCosts();
+            updateCosts();
+            updateCounter();
+        }
+    }
+
+    public void buyUpgrade2(View v) {
+        if (upgrades.get(1).getCost() <= clicks.getClicks()) {
+            upgrades.get(1).buyUpgrade();
+            updateCosts();
+            updateCosts();
+            updateCounter();
         }
     }
 
     private void updateCounter() {
         TextView counter = (TextView) findViewById(R.id.upgradeCounter);
         counter.setText(String.valueOf(clicks.getClicks()));
+        counter = (TextView) findViewById(R.id.upgradeCPS);
+        counter.setText(String.valueOf(CPS.getCPS() + " CPS"));
     }
 
     private void updateCosts() {
-        TextView cost = (TextView) findViewById(R.id.upgrade1Cost);
-        if (upgrade1.getLevel() > 0) {
-            cost.setText(String.valueOf(upgrade1.getCost()));
-        } else
-            cost.setText(String.valueOf((upgrade1.getCost() * upgrade1.getCostGrowth()) * upgrade1.getLevel()));
+
+       for(Upgrade u:upgrades)
+       {
+             costs.get(upgrades.indexOf(u)).setText(String.valueOf(u.getCost()));
+       }
+
     }
 
     /**
